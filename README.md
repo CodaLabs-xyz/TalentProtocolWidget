@@ -1,6 +1,6 @@
 # Talent Protocol GitHub Widget
 
-A GitHub widget that displays your Talent Protocol Builder Score and display name in your README.
+A sleek, interactive GitHub widget that displays your complete Talent Protocol profile including Builder Score, bio, location, and a direct link to your profile. Features Talent Protocol's signature black and metallic gray design.
 
 ## Setup
 
@@ -57,15 +57,34 @@ Make sure to set the `TALENT_API_KEY` environment variable on your deployment pl
 
 ## Widget Features
 
-- **Profile Information**: Display name, profile image, bio, and location from Talent Protocol
-- **Builder Score**: Shows points with color-coded progress ring (green ≥400, orange ≥200, red <200)
-- **Interactive Button**: "View Profile →" button that opens user's Talent Protocol profile in new tab
-- **Profile Image**: User's avatar with circular clipping, or initials fallback
-- **Bio & Location**: Truncated bio text and location with 📍 icon
-- **Status Indicator**: Shows if score is currently calculating
-- **Responsive Design**: 500x160px SVG that scales well in GitHub READMEs
-- **Caching**: Results cached for 1 hour for better performance
-- **Error Handling**: Graceful fallback displays for API errors
+### 🎨 Design
+- **Talent Protocol Branding**: Black background with metallic gray accents matching official design
+- **Professional Look**: Sleek 500x160px SVG optimized for GitHub READMEs
+- **Responsive**: Scales perfectly across different screen sizes
+
+### 👤 Profile Information
+- **Display Name**: User's Talent Protocol display name
+- **Avatar**: Stylized initials in metallic circle (GitHub-compatible)
+- **Bio**: Truncated biography text (60 characters max)
+- **Location**: Geographic location with 📍 icon
+
+### 📊 Builder Score
+- **Score Display**: Large, prominent score with color coding:
+  - 🟢 Green: ≥400 points (High)
+  - 🟠 Orange: ≥200 points (Medium)  
+  - 🔴 Red: <200 points (Growing)
+- **Progress Ring**: Visual progress indicator
+- **Status**: Shows if score is currently calculating
+
+### 🔗 Interactive Features
+- **Clickable Widget**: Single-click access to Talent Protocol profile
+- **GitHub Optimized**: Works seamlessly in markdown files
+- **New Tab**: Opens profile without leaving GitHub page
+
+### ⚡ Performance
+- **Fast Loading**: Parallel API calls for optimal speed
+- **Caching**: 1-hour cache for improved performance
+- **Error Handling**: Graceful fallbacks for API issues
 
 ## API Endpoints
 
@@ -90,11 +109,33 @@ The widget makes two parallel API calls to Talent Protocol:
 
 Both calls require the `X-API-KEY` header with your Talent Protocol API key.
 
-## Example Usage
+## 🚀 Quick Start
 
+### Step 1: Get Your Identifiers
+- **Wallet Address**: Your Ethereum wallet address (e.g., `0xc2564e41B7F5Cb66d2d99466450CfebcE9e8228f`)
+- **Profile ID**: Found in your Talent Protocol profile URL: `https://app.talentprotocol.com/YOUR_PROFILE_ID`
+
+### Step 2: Add to Your README
+
+**✅ Recommended (Clickable Widget):**
 ```markdown
-![Talent Protocol Score](https://talent-protocol-widget.vercel.app/widget/0xc2564e41B7F5Cb66d2d99466450CfebcE9e8228f)
+[![Talent Protocol Score](https://talent-protocol-widget.vercel.app/widget/YOUR_WALLET_ADDRESS)](https://app.talentprotocol.com/YOUR_PROFILE_ID)
 ```
+
+**Basic Display (Non-clickable):**
+```markdown
+![Talent Protocol Score](https://talent-protocol-widget.vercel.app/widget/YOUR_WALLET_ADDRESS)
+```
+
+### Step 3: Example (Working Link)
+```markdown
+[![Talent Protocol Score](https://talent-protocol-widget.vercel.app/widget/0xc2564e41B7F5Cb66d2d99466450CfebcE9e8228f)](https://app.talentprotocol.com/YOUR_PROFILE_ID)
+```
+
+### 💡 Pro Tips
+- Use the **clickable format** for best user experience
+- Widget updates automatically every hour
+- Works in any GitHub markdown file (README, issues, PRs)
 
 ## Dependencies
 
@@ -102,11 +143,47 @@ Both calls require the `X-API-KEY` header with your Talent Protocol API key.
 - `axios` - HTTP client for API calls
 - `dotenv` - Environment variable loader
 
-## Troubleshooting
+## 📋 Technical Details
 
-1. **"No API key configured" error**: Make sure you have a `.env` file with `TALENT_API_KEY` set
-2. **Port already in use**: Change the port in `.env` or kill the process using the port
-3. **API errors**: Use the `/test/:walletAddress` endpoint to debug API responses
+### GitHub Compatibility
+The widget is specifically optimized for GitHub markdown:
+- **SVG Format**: Renders consistently across all devices
+- **No External Dependencies**: Self-contained for reliable display
+- **Security Compliant**: Follows GitHub's content restrictions
+
+### API Rate Limits
+- **Caching**: 1-hour cache reduces API calls
+- **Parallel Requests**: Profile and score data fetched simultaneously
+- **Error Handling**: Graceful fallbacks if API is unavailable
+
+### Performance
+- **Fast Loading**: Optimized SVG generation
+- **CDN Friendly**: Works with GitHub's image CDN
+- **Scalable**: Handles high traffic via Vercel serverless functions
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+| Issue | Solution |
+|-------|----------|
+| **Widget not displaying** | Check wallet address format and API key configuration |
+| **Not clickable in GitHub** | Use `[![...](widget)](profile)` format instead of `![...](widget)` |
+| **Score shows as 0** | Verify wallet address has a Talent Protocol profile |
+| **API errors** | Use `/test/:walletAddress` endpoint to debug responses |
+
+### Development Issues
+
+| Issue | Solution |
+|-------|----------|
+| **"No API key configured"** | Create `.env` file with `TALENT_API_KEY` |
+| **Port already in use** | Change port in `.env` or kill existing process |
+| **API timeout** | Check Talent Protocol API status |
+
+### Debug Endpoints
+- **Health Check**: `https://talent-protocol-widget.vercel.app/health`
+- **API Test**: `https://talent-protocol-widget.vercel.app/test/YOUR_WALLET_ADDRESS`
+- **Raw Widget**: `https://talent-protocol-widget.vercel.app/widget/YOUR_WALLET_ADDRESS`
 
 ## License
 

@@ -17,7 +17,7 @@ function generateSVG(profileData) {
   const truncatedBio = bio && bio.length > 60 ? bio.substring(0, 57) + '...' : bio;
   
   return `
-<svg width="500" height="160" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="500" height="160" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#0A0A0A;stop-opacity:1" />
@@ -31,22 +31,14 @@ function generateSVG(profileData) {
       <stop offset="0%" style="stop-color:#707070;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#909090;stop-opacity:1" />
     </linearGradient>
-    <clipPath id="avatarClip">
-      <circle cx="40" cy="40" r="25"/>
-    </clipPath>
   </defs>
   
   <rect width="500" height="160" rx="12" fill="url(#bg)" stroke="#404040" stroke-width="1"/>
   
-  <!-- Profile Image -->
-  ${imageUrl ? `
-  <image xlink:href="${imageUrl}" x="15" y="15" width="50" height="50" clip-path="url(#avatarClip)" />
-  <circle cx="40" cy="40" r="25" fill="none" stroke="url(#accentGrad)" stroke-width="2"/>
-  ` : `
+  <!-- Profile Avatar -->
   <circle cx="40" cy="40" r="25" fill="url(#accentGrad)"/>
   <text x="40" y="48" font-family="Arial, sans-serif" font-size="20" font-weight="bold" 
         fill="#0A0A0A" text-anchor="middle">${(displayName || 'B').charAt(0).toUpperCase()}</text>
-  `}
   
   <!-- Name and Location -->
   <text x="80" y="30" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#E0E0E0">
@@ -73,11 +65,7 @@ function generateSVG(profileData) {
   <text x="20" y="85" font-family="Arial, sans-serif" font-size="11" fill="#C0C0C0">
     ${truncatedBio}
   </text>
-  ` : `
-  <text x="20" y="85" font-family="Arial, sans-serif" font-size="11" fill="#808080">
-    [Debug: bio="${bio}", imageUrl="${imageUrl}"]
-  </text>
-  `}
+  ` : ''}
   
   <!-- Score Section -->
   <text x="20" y="115" font-family="Arial, sans-serif" font-size="12" fill="#B0B0B0">
@@ -154,8 +142,7 @@ app.get('/widget/:walletAddress', async (req, res) => {
     const builderScore = scoreResponse.data.score?.points || 0;
     const calculating = scoreResponse.data.score?.calculating_score || false;
     
-    console.log(`Raw profile response:`, JSON.stringify(profileResponse.data, null, 2));
-    console.log(`Profile data:`, { displayName, imageUrl, bio, location, profileId, builderScore, calculating });
+    console.log(`Profile data:`, { displayName, bio, location, profileId, builderScore, calculating });
     
     const svg = generateSVG({
       builderScore,
