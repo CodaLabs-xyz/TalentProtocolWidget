@@ -16,7 +16,7 @@ function generateSVG(profileData) {
   const truncatedBio = bio && bio.length > 60 ? bio.substring(0, 57) + '...' : bio;
   
   return `
-<svg width="500" height="190" xmlns="http://www.w3.org/2000/svg">
+<svg width="500" height="160" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#0A0A0A;stop-opacity:1" />
@@ -28,50 +28,62 @@ function generateSVG(profileData) {
     </linearGradient>
   </defs>
   
-  <rect width="500" height="190" rx="12" fill="url(#bg)" stroke="#404040" stroke-width="1"/>
+  <rect width="500" height="160" rx="12" fill="url(#bg)" stroke="#404040" stroke-width="1"/>
   
+  <!-- Left Section: Profile Info -->
   <!-- Talent Protocol Logo -->
-  <g transform="translate(230, 20)">
+  <g transform="translate(30, 25)">
     <path d="M15.6946 18.0951C16.1754 18.5746 16.8166 18.8143 17.618 18.8143L25.8148 18.8143L24.8916 16.1773L18.366 16.1773C17.8674 16.1773 17.618 15.911 17.618 15.3782L17.618 8.8908L15 8L15 16.1773C15 16.9764 15.2315 17.6157 15.6946 18.0951Z" fill="white"/>
     <path d="M15.6946 31.2807C16.1754 31.7601 16.8166 31.9999 17.618 31.9999L25.8148 31.9999L24.8916 29.3629L18.366 29.3629C17.8674 29.3629 17.618 29.0965 17.618 28.5638L17.618 22.0763L15 21.1855L15 29.3629C15 30.162 15.2315 30.8012 15.6946 31.2807Z" fill="white"/>
   </g>
   
-  <!-- Name and Location -->
-  <text x="250" y="75" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#E0E0E0" text-anchor="middle">
+  <!-- Name -->
+  <text x="90" y="35" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#E0E0E0">
     ${displayName || 'Builder'}
   </text>
   
+  <!-- Location -->
   ${location ? `
-  <text x="250" y="95" font-family="Arial, sans-serif" font-size="14" fill="#B0B0B0" text-anchor="middle">
+  <text x="90" y="55" font-family="Arial, sans-serif" font-size="14" fill="#B0B0B0">
     📍 ${location}
+  </text>
+  ` : ''}
+  
+  <!-- Bio -->
+  ${truncatedBio ? `
+  <text x="90" y="80" font-family="Arial, sans-serif" font-size="12" fill="#C0C0C0">
+    ${truncatedBio}
   </text>
   ` : ''}
   
   <!-- View Profile Button -->
   ${profileId ? `
   <a href="https://app.talentprotocol.com/${profileId}" target="_blank">
-    <rect x="185" y="105" width="130" height="25" rx="12" fill="url(#buttonBg)" stroke="#707070" stroke-width="1" style="cursor:pointer"/>
-    <text x="250" y="120" font-family="Arial, sans-serif" font-size="11" font-weight="bold" 
+    <rect x="90" y="100" width="120" height="28" rx="14" fill="url(#buttonBg)" stroke="#707070" stroke-width="1" style="cursor:pointer"/>
+    <text x="150" y="118" font-family="Arial, sans-serif" font-size="12" font-weight="bold" 
           fill="#E0E0E0" text-anchor="middle">View Profile →</text>
   </a>
   ` : ''}
   
-  <!-- Bio -->
-  ${truncatedBio ? `
-  <text x="250" y="140" font-family="Arial, sans-serif" font-size="11" fill="#C0C0C0" text-anchor="middle">
-    ${truncatedBio}
-  </text>
-  ` : ''}
-  
-  <!-- Score Section -->
-  <text x="250" y="145" font-family="Arial, sans-serif" font-size="11" fill="#B0B0B0" text-anchor="middle">
+  <!-- Right Section: Score Display -->
+  <text x="380" y="35" font-family="Arial, sans-serif" font-size="12" fill="#B0B0B0" text-anchor="middle">
     ${statusText}
   </text>
-  <text x="250" y="165" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#E0E0E0" text-anchor="middle">
+  <text x="380" y="60" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#E0E0E0" text-anchor="middle">
     ${builderScore || 'N/A'}
   </text>
-  <text x="250" y="180" font-family="Arial, sans-serif" font-size="10" fill="#909090" text-anchor="middle">
+  <text x="380" y="75" font-family="Arial, sans-serif" font-size="11" fill="#909090" text-anchor="middle">
     ${calculating ? 'updating...' : 'points'}
+  </text>
+  
+  <!-- Score Circle Background -->
+  <circle cx="380" cy="105" r="35" fill="none" stroke="#404040" stroke-width="3"/>
+  <circle cx="380" cy="105" r="35" fill="none" stroke="#606060" stroke-width="2" 
+          stroke-dasharray="${Math.min((builderScore / 500) * 220, 220)} 220" transform="rotate(-90 380 105)"/>
+  
+  <text x="380" y="110" font-family="Arial, sans-serif" font-size="14" font-weight="bold" 
+        fill="#E0E0E0" text-anchor="middle">
+    ${Math.round((builderScore / 500) * 100) || 0}%
   </text>
 </svg>`.trim();
 }
