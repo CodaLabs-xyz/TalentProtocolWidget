@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 
@@ -8,82 +9,162 @@ const TALENT_API_BASE = 'https://api.talentprotocol.com';
 const API_KEY = process.env.TALENT_API_KEY;
 
 function generateSVG(profileData) {
-  const { name, builderScore, verified } = profileData;
-  const scoreColor = builderScore >= 80 ? '#4CAF50' : builderScore >= 60 ? '#FF9800' : '#F44336';
-  const verifiedIcon = verified ? '✓' : '';
+  const { builderScore, calculating, displayName, imageUrl, bio, location, profileId } = profileData;
+  const scoreColor = builderScore >= 400 ? '#4CAF50' : builderScore >= 200 ? '#FF9800' : '#F44336';
+  const statusText = calculating ? 'Calculating...' : 'Builder Score';
+  
+  // Truncate bio to fit in widget
+  const truncatedBio = bio && bio.length > 60 ? bio.substring(0, 57) + '...' : bio;
   
   return `
-<svg width="400" height="120" xmlns="http://www.w3.org/2000/svg">
+<svg width="500" height="160" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#0A0A0A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1A1A1A;stop-opacity:1" />
     </linearGradient>
+    <linearGradient id="buttonBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#404040;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#505050;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#707070;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#909090;stop-opacity:1" />
+    </linearGradient>
+    <clipPath id="avatarClip">
+      <circle cx="40" cy="40" r="25"/>
+    </clipPath>
   </defs>
   
-  <rect width="400" height="120" rx="10" fill="url(#bg)"/>
+  <rect width="500" height="160" rx="12" fill="url(#bg)" stroke="#404040" stroke-width="1"/>
   
-  <text x="20" y="30" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">
-    Talent Protocol ${verifiedIcon}
+  <!-- Profile Image -->
+  ${imageUrl ? `
+  <image xlink:href="${imageUrl}" x="15" y="15" width="50" height="50" clip-path="url(#avatarClip)" />
+  <circle cx="40" cy="40" r="25" fill="none" stroke="url(#accentGrad)" stroke-width="2"/>
+  ` : `
+  <circle cx="40" cy="40" r="25" fill="url(#accentGrad)"/>
+  <text x="40" y="48" font-family="Arial, sans-serif" font-size="20" font-weight="bold" 
+        fill="#0A0A0A" text-anchor="middle">${(displayName || 'B').charAt(0).toUpperCase()}</text>
+  `}
+  
+  <!-- Name and Location -->
+  <text x="80" y="30" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#E0E0E0">
+    ${displayName || 'Builder'}
   </text>
   
-  <text x="20" y="55" font-family="Arial, sans-serif" font-size="14" fill="white" opacity="0.9">
-    ${name || 'Builder'}
+  ${location ? `
+  <text x="80" y="50" font-family="Arial, sans-serif" font-size="12" fill="#B0B0B0">
+    📍 ${location}
+  </text>
+  ` : ''}
+  
+  <!-- View Profile Button -->
+  ${profileId ? `
+  <a href="https://app.talentprotocol.com/${profileId}" target="_blank">
+    <rect x="350" y="15" width="130" height="30" rx="15" fill="url(#buttonBg)" stroke="#707070" stroke-width="1" style="cursor:pointer"/>
+    <text x="415" y="33" font-family="Arial, sans-serif" font-size="12" font-weight="bold" 
+          fill="#E0E0E0" text-anchor="middle">View Profile →</text>
+  </a>
+  ` : ''}
+  
+  <!-- Bio -->
+  ${truncatedBio ? `
+  <text x="20" y="85" font-family="Arial, sans-serif" font-size="11" fill="#C0C0C0">
+    ${truncatedBio}
+  </text>
+  ` : `
+  <text x="20" y="85" font-family="Arial, sans-serif" font-size="11" fill="#808080">
+    [Debug: bio="${bio}", imageUrl="${imageUrl}"]
+  </text>
+  `}
+  
+  <!-- Score Section -->
+  <text x="20" y="115" font-family="Arial, sans-serif" font-size="12" fill="#B0B0B0">
+    ${statusText}
   </text>
   
-  <text x="20" y="80" font-family="Arial, sans-serif" font-size="12" fill="white" opacity="0.8">
-    Builder Score
-  </text>
-  
-  <text x="20" y="100" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="${scoreColor}">
+  <text x="20" y="140" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="${scoreColor}">
     ${builderScore || 'N/A'}
   </text>
   
-  <circle cx="350" cy="60" r="35" fill="none" stroke="white" stroke-width="3" opacity="0.3"/>
-  <circle cx="350" cy="60" r="35" fill="none" stroke="${scoreColor}" stroke-width="3" 
-          stroke-dasharray="${(builderScore / 100) * 220} 220" transform="rotate(-90 350 60)"/>
+  <text x="120" y="140" font-family="Arial, sans-serif" font-size="10" fill="#909090">
+    ${calculating ? 'updating...' : 'points'}
+  </text>
   
-  <text x="350" y="65" font-family="Arial, sans-serif" font-size="16" font-weight="bold" 
-        fill="white" text-anchor="middle">
+  <!-- Progress Ring -->
+  <circle cx="430" cy="120" r="30" fill="none" stroke="#404040" stroke-width="3"/>
+  <circle cx="430" cy="120" r="30" fill="none" stroke="${scoreColor}" stroke-width="3" 
+          stroke-dasharray="${Math.min((builderScore / 500) * 188, 188)} 188" transform="rotate(-90 430 120)"/>
+  
+  <text x="430" y="125" font-family="Arial, sans-serif" font-size="14" font-weight="bold" 
+        fill="#E0E0E0" text-anchor="middle">
     ${builderScore || 0}
   </text>
 </svg>`.trim();
 }
 
-app.get('/widget/:profileId', async (req, res) => {
+app.get('/widget/:walletAddress', async (req, res) => {
   try {
-    const { profileId } = req.params;
+    const { walletAddress } = req.params;
     
-    console.log(`Fetching widget for profile: ${profileId}`);
+    console.log(`Fetching widget for wallet: ${walletAddress}`);
     console.log(`API Key configured: ${!!API_KEY}`);
     
     if (!API_KEY) {
       console.error('No API key configured');
       return res.status(500).send(generateSVG({
-        name: 'No API Key',
         builderScore: 0,
-        verified: false
+        calculating: false,
+        displayName: 'No API Key',
+        imageUrl: '',
+        bio: '',
+        location: '',
+        profileId: ''
       }));
     }
     
-    const response = await axios.get(`${TALENT_API_BASE}/accounts`, {
-      headers: {
-        'X-API-KEY': API_KEY
-      },
-      params: {
-        identifier: profileId
-      }
-    });
+    // Make both API calls in parallel
+    const [profileResponse, scoreResponse] = await Promise.all([
+      axios.get(`${TALENT_API_BASE}/profile`, {
+        headers: {
+          'X-API-KEY': API_KEY
+        },
+        params: {
+          id: walletAddress
+        }
+      }),
+      axios.get(`${TALENT_API_BASE}/score`, {
+        headers: {
+          'X-API-KEY': API_KEY
+        },
+        params: {
+          id: walletAddress
+        }
+      })
+    ]);
     
-    const profileData = response.data;
-    const builderScore = profileData.builder_score || profileData.score || 0;
-    const name = profileData.name || profileData.username || 'Builder';
-    const verified = profileData.verified || profileData.is_verified || false;
+    const profileData = profileResponse.data.profile || {};
+    const displayName = profileData.display_name || 'Builder';
+    const imageUrl = profileData.image_url || '';
+    const bio = profileData.bio || '';
+    const location = profileData.location || '';
+    const profileId = profileData.id || '';
+    
+    const builderScore = scoreResponse.data.score?.points || 0;
+    const calculating = scoreResponse.data.score?.calculating_score || false;
+    
+    console.log(`Raw profile response:`, JSON.stringify(profileResponse.data, null, 2));
+    console.log(`Profile data:`, { displayName, imageUrl, bio, location, profileId, builderScore, calculating });
     
     const svg = generateSVG({
-      name,
       builderScore,
-      verified
+      calculating,
+      displayName,
+      imageUrl,
+      bio,
+      location,
+      profileId
     });
     
     res.setHeader('Content-Type', 'image/svg+xml');
@@ -99,9 +180,13 @@ app.get('/widget/:profileId', async (req, res) => {
     });
     
     const errorSvg = generateSVG({
-      name: `Error ${error.response?.status || 'Unknown'}`,
       builderScore: 0,
-      verified: false
+      calculating: false,
+      displayName: `Error ${error.response?.status || 'Unknown'}`,
+      imageUrl: '',
+      bio: '',
+      location: '',
+      profileId: ''
     });
     
     res.setHeader('Content-Type', 'image/svg+xml');
@@ -117,27 +202,44 @@ app.get('/health', (req, res) => {
   });
 });
 
-app.get('/test/:profileId', async (req, res) => {
+app.get('/test/:walletAddress', async (req, res) => {
   try {
-    const { profileId } = req.params;
+    const { walletAddress } = req.params;
     
     if (!API_KEY) {
       return res.json({ error: 'No API key configured' });
     }
     
-    const response = await axios.get(`${TALENT_API_BASE}/accounts`, {
-      headers: {
-        'X-API-KEY': API_KEY
-      },
-      params: {
-        identifier: profileId
-      }
-    });
+    // Test both endpoints
+    const [profileResponse, scoreResponse] = await Promise.all([
+      axios.get(`${TALENT_API_BASE}/profile`, {
+        headers: {
+          'X-API-KEY': API_KEY
+        },
+        params: {
+          id: walletAddress
+        }
+      }),
+      axios.get(`${TALENT_API_BASE}/score`, {
+        headers: {
+          'X-API-KEY': API_KEY
+        },
+        params: {
+          id: walletAddress
+        }
+      })
+    ]);
     
     res.json({
       success: true,
-      data: response.data,
-      status: response.status
+      profile: {
+        data: profileResponse.data,
+        status: profileResponse.status
+      },
+      score: {
+        data: scoreResponse.data,
+        status: scoreResponse.status
+      }
     });
     
   } catch (error) {
@@ -152,5 +254,5 @@ app.get('/test/:profileId', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Talent Protocol Widget server running on port ${PORT}`);
-  console.log(`Widget URL: http://localhost:${PORT}/widget/[PROFILE_ID]`);
+  console.log(`Widget URL: http://localhost:${PORT}/widget/[WALLET_ADDRESS]`);
 });
