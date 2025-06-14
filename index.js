@@ -9,8 +9,7 @@ const TALENT_API_BASE = 'https://api.talentprotocol.com';
 const API_KEY = process.env.TALENT_API_KEY;
 
 function generateSVG(profileData) {
-  const { builderScore, calculating, displayName, imageUrl, bio, location, profileId } = profileData;
-  const scoreColor = builderScore >= 400 ? '#4CAF50' : builderScore >= 200 ? '#FF9800' : '#F44336';
+  const { builderScore, calculating, displayName, bio, location, profileId } = profileData;
   const statusText = calculating ? 'Calculating...' : 'Builder Score';
   
   // Truncate bio to fit in widget
@@ -35,18 +34,13 @@ function generateSVG(profileData) {
   
   <rect width="500" height="160" rx="12" fill="url(#bg)" stroke="#404040" stroke-width="1"/>
   
-  <!-- Profile Avatar -->
-  <circle cx="40" cy="40" r="25" fill="url(#accentGrad)"/>
-  <text x="40" y="48" font-family="Arial, sans-serif" font-size="20" font-weight="bold" 
-        fill="#0A0A0A" text-anchor="middle">${(displayName || 'B').charAt(0).toUpperCase()}</text>
-  
   <!-- Name and Location -->
-  <text x="80" y="30" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#E0E0E0">
+  <text x="250" y="35" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#E0E0E0" text-anchor="middle">
     ${displayName || 'Builder'}
   </text>
   
   ${location ? `
-  <text x="80" y="50" font-family="Arial, sans-serif" font-size="12" fill="#B0B0B0">
+  <text x="250" y="55" font-family="Arial, sans-serif" font-size="14" fill="#B0B0B0" text-anchor="middle">
     📍 ${location}
   </text>
   ` : ''}
@@ -54,40 +48,22 @@ function generateSVG(profileData) {
   <!-- View Profile Button -->
   ${profileId ? `
   <a href="https://app.talentprotocol.com/${profileId}" target="_blank">
-    <rect x="350" y="15" width="130" height="30" rx="15" fill="url(#buttonBg)" stroke="#707070" stroke-width="1" style="cursor:pointer"/>
-    <text x="415" y="33" font-family="Arial, sans-serif" font-size="12" font-weight="bold" 
+    <rect x="185" y="70" width="130" height="30" rx="15" fill="url(#buttonBg)" stroke="#707070" stroke-width="1" style="cursor:pointer"/>
+    <text x="250" y="88" font-family="Arial, sans-serif" font-size="12" font-weight="bold" 
           fill="#E0E0E0" text-anchor="middle">View Profile →</text>
   </a>
   ` : ''}
   
   <!-- Bio -->
   ${truncatedBio ? `
-  <text x="20" y="85" font-family="Arial, sans-serif" font-size="11" fill="#C0C0C0">
+  <text x="250" y="125" font-family="Arial, sans-serif" font-size="12" fill="#C0C0C0" text-anchor="middle">
     ${truncatedBio}
   </text>
   ` : ''}
   
   <!-- Score Section -->
-  <text x="20" y="115" font-family="Arial, sans-serif" font-size="12" fill="#B0B0B0">
-    ${statusText}
-  </text>
-  
-  <text x="20" y="140" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="${scoreColor}">
-    ${builderScore || 'N/A'}
-  </text>
-  
-  <text x="120" y="140" font-family="Arial, sans-serif" font-size="10" fill="#909090">
-    ${calculating ? 'updating...' : 'points'}
-  </text>
-  
-  <!-- Progress Ring -->
-  <circle cx="430" cy="120" r="30" fill="none" stroke="#404040" stroke-width="3"/>
-  <circle cx="430" cy="120" r="30" fill="none" stroke="${scoreColor}" stroke-width="3" 
-          stroke-dasharray="${Math.min((builderScore / 500) * 188, 188)} 188" transform="rotate(-90 430 120)"/>
-  
-  <text x="430" y="125" font-family="Arial, sans-serif" font-size="14" font-weight="bold" 
-        fill="#E0E0E0" text-anchor="middle">
-    ${builderScore || 0}
+  <text x="250" y="145" font-family="Arial, sans-serif" font-size="14" fill="#B0B0B0" text-anchor="middle">
+    ${statusText}: ${builderScore || 'N/A'} ${calculating ? '(updating...)' : 'points'}
   </text>
 </svg>`.trim();
 }

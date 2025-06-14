@@ -63,18 +63,15 @@ Make sure to set the `TALENT_API_KEY` environment variable on your deployment pl
 - **Responsive**: Scales perfectly across different screen sizes
 
 ### 👤 Profile Information
-- **Display Name**: User's Talent Protocol display name
-- **Avatar**: Stylized initials in metallic circle (GitHub-compatible)
-- **Bio**: Truncated biography text (60 characters max)
+- **Display Name**: User's Talent Protocol display name (centered)
+- **Bio**: Truncated biography text (60 characters max) 
 - **Location**: Geographic location with 📍 icon
+- **Clean Layout**: Centered design without profile images for GitHub compatibility
 
 ### 📊 Builder Score
-- **Score Display**: Large, prominent score with color coding:
-  - 🟢 Green: ≥400 points (High)
-  - 🟠 Orange: ≥200 points (Medium)  
-  - 🔴 Red: <200 points (Growing)
-- **Progress Ring**: Visual progress indicator
+- **Score Display**: Clean, centered score display
 - **Status**: Shows if score is currently calculating
+- **Points Format**: Displays actual points with context
 
 ### 🔗 Interactive Features
 - **Clickable Widget**: Single-click access to Talent Protocol profile
@@ -98,7 +95,6 @@ The widget makes two parallel API calls to Talent Protocol:
 
 1. **Profile Data** - `GET /profile?id=WALLET_ADDRESS`
    - `profile.display_name` - User's display name
-   - `profile.image_url` - Profile avatar image
    - `profile.bio` - User biography (truncated to 60 chars)
    - `profile.location` - Geographic location
    - `profile.id` - Profile ID for creating Talent Protocol profile link
@@ -129,7 +125,7 @@ Both calls require the `X-API-KEY` header with your Talent Protocol API key.
 
 ### Step 3: Example (Working Link)
 ```markdown
-[![Talent Protocol Score](https://talent-protocol-widget.vercel.app/widget/0xc2564e41B7F5Cb66d2d99466450CfebcE9e8228f)](https://app.talentprotocol.com/YOUR_PROFILE_ID)
+[![Talent Protocol Score](https://talent-protocol-widget.vercel.app/widget/0xc2564e41B7F5Cb66d2d99466450CfebcE9e8228f)](https://app.talentprotocol.com/4e9db003-da84-466e-a951-c4c8973dfda9)
 ```
 
 ### 💡 Pro Tips

@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2025-06-14
+
+### Removed
+- **Profile Avatar**: Removed profile image/avatar circle to fix GitHub markdown compatibility issues
+- **Progress Ring**: Simplified design by removing color-coded progress ring
+- **External Image Dependencies**: Eliminated external image loading for better GitHub performance
+
+### Changed
+- **Centered Layout**: All content now centered for clean, professional appearance
+- **Simplified Design**: Streamlined widget focusing on essential information
+- **Button Position**: Moved "View Profile →" button to center below name/location
+- **Score Display**: Consolidated score information into single centered line
+- **GitHub Optimized**: Enhanced compatibility with GitHub's markdown restrictions
+
+### Fixed
+- **Image Loading Issues**: Resolved profile image display problems in GitHub READMEs
+- **Layout Consistency**: Ensures consistent display across all platforms
+
 ## [1.3.0] - 2025-06-14
 
 ### Added
