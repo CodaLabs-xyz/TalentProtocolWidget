@@ -26,10 +26,6 @@ function generateSVG(profileData) {
       <stop offset="0%" style="stop-color:#404040;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#505050;stop-opacity:1" />
     </linearGradient>
-    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#707070;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#909090;stop-opacity:1" />
-    </linearGradient>
   </defs>
   
   <rect width="500" height="160" rx="12" fill="url(#bg)" stroke="#404040" stroke-width="1"/>
@@ -81,7 +77,6 @@ app.get('/widget/:walletAddress', async (req, res) => {
         builderScore: 0,
         calculating: false,
         displayName: 'No API Key',
-        imageUrl: '',
         bio: '',
         location: '',
         profileId: ''
@@ -110,7 +105,6 @@ app.get('/widget/:walletAddress', async (req, res) => {
     
     const profileData = profileResponse.data.profile || {};
     const displayName = profileData.display_name || 'Builder';
-    const imageUrl = profileData.image_url || '';
     const bio = profileData.bio || '';
     const location = profileData.location || '';
     const profileId = profileData.id || '';
@@ -124,7 +118,6 @@ app.get('/widget/:walletAddress', async (req, res) => {
       builderScore,
       calculating,
       displayName,
-      imageUrl,
       bio,
       location,
       profileId
@@ -146,7 +139,6 @@ app.get('/widget/:walletAddress', async (req, res) => {
       builderScore: 0,
       calculating: false,
       displayName: `Error ${error.response?.status || 'Unknown'}`,
-      imageUrl: '',
       bio: '',
       location: '',
       profileId: ''
