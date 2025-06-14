@@ -63,15 +63,16 @@ Make sure to set the `TALENT_API_KEY` environment variable on your deployment pl
 - **Responsive**: Scales perfectly across different screen sizes
 
 ### 👤 Profile Information
-- **Display Name**: User's Talent Protocol display name (centered)
-- **Bio**: Truncated biography text (60 characters max) 
+- **Display Name**: User's Talent Protocol display name with Talent logo
+- **Multiline Bio**: Smart word-wrapped biography (up to 2 lines, 35 chars/line)
 - **Location**: Geographic location with 📍 icon
-- **Clean Layout**: Centered design without profile images for GitHub compatibility
+- **Clean Layout**: Professional 2-column design optimized for GitHub
 
 ### 📊 Builder Score
-- **Score Display**: Clean, centered score display
-- **Status**: Shows if score is currently calculating
-- **Points Format**: Displays actual points with context
+- **Large Score Display**: Prominent 22px score in progress ring
+- **Progress Ring**: Visual indicator scaled to 1000 max points
+- **Status Label**: "Builder Score" with "points" descriptor
+- **Real-time Updates**: Shows if score is currently calculating
 
 ### 🔗 Interactive Features
 - **Clickable Widget**: Single-click access to Talent Protocol profile
@@ -123,9 +124,15 @@ Both calls require the `X-API-KEY` header with your Talent Protocol API key.
 ![Talent Protocol Score](https://talent-protocol-widget.vercel.app/widget/YOUR_WALLET_ADDRESS)
 ```
 
-### Step 3: Example (Working Link)
+### Step 3: Working Example
+**Copy this exact code for the demo profile:**
 ```markdown
 [![Talent Protocol Score](https://talent-protocol-widget.vercel.app/widget/0xc2564e41B7F5Cb66d2d99466450CfebcE9e8228f)](https://app.talentprotocol.com/4e9db003-da84-466e-a951-c4c8973dfda9)
+```
+
+**For your own profile, replace with your details:**
+```markdown
+[![Talent Protocol Score](https://talent-protocol-widget.vercel.app/widget/YOUR_WALLET_ADDRESS)](https://app.talentprotocol.com/YOUR_PROFILE_ID)
 ```
 
 ### 💡 Pro Tips
@@ -141,21 +148,29 @@ Both calls require the `X-API-KEY` header with your Talent Protocol API key.
 
 ## 📋 Technical Details
 
-### GitHub Compatibility
-The widget is specifically optimized for GitHub markdown:
-- **SVG Format**: Renders consistently across all devices
-- **No External Dependencies**: Self-contained for reliable display
-- **Security Compliant**: Follows GitHub's content restrictions
+### Widget Specifications
+- **Dimensions**: 500×180px SVG optimized for GitHub
+- **Layout**: 2-column design (profile left, score right)
+- **Typography**: Arial font family with multiple sizes
+- **Color Scheme**: Talent Protocol black with metallic gray accents
 
-### API Rate Limits
-- **Caching**: 1-hour cache reduces API calls
+### GitHub Compatibility
+- **SVG Format**: Renders consistently across all devices
+- **HTML Entity Escaping**: Safe rendering of special characters
+- **No External Images**: Avoids GitHub security restrictions
+- **Markdown Optimized**: Works with GitHub's image CDN
+
+### API Integration
 - **Parallel Requests**: Profile and score data fetched simultaneously
-- **Error Handling**: Graceful fallbacks if API is unavailable
+- **1-hour Caching**: Reduces API calls and improves performance
+- **Error Handling**: Graceful fallbacks with informative displays
+- **Rate Limiting**: Respects Talent Protocol API limits
 
 ### Performance
-- **Fast Loading**: Optimized SVG generation
-- **CDN Friendly**: Works with GitHub's image CDN
-- **Scalable**: Handles high traffic via Vercel serverless functions
+- **Serverless**: Deployed on Vercel for global edge performance
+- **Fast SVG Generation**: Optimized template rendering
+- **Automatic Updates**: Refreshes data every hour
+- **Scalable**: Handles high traffic efficiently
 
 ## 🔧 Troubleshooting
 

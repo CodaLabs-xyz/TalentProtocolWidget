@@ -2,19 +2,36 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] - 2025-06-14
+
+### Added
+- **Multiline Bio Support**: Bio text now displays across up to 2 lines with smart word wrapping
+- **HTML Entity Escaping**: Safe rendering of special characters in bio, name, and location
+- **Adaptive Button Positioning**: Button automatically adjusts position based on bio length
+- **Enhanced Score Display**: Larger 22px score in progress ring for better visibility
+
+### Changed
+- **Bio Character Limit**: Increased to 70 characters (35 per line) with intelligent word breaks
+- **Progress Ring Scaling**: Now scales to 1000 max points for more accurate representation
+- **Widget Layout**: Optimized 2-column design with better element spacing
+- **Error Handling**: Improved XML parsing with proper character escaping
+
+### Fixed
+- **XML Parsing Errors**: Resolved "Cannot use 'in' operator" errors in browsers
+- **Bio Display Issues**: Bio text now always visible with proper multiline rendering
+- **Button Visibility**: "View Profile →" button always shows with proper positioning
+
 ## [1.4.0] - 2025-06-14
 
 ### Removed
 - **Profile Avatar**: Removed profile image/avatar circle to fix GitHub markdown compatibility issues
-- **Progress Ring**: Simplified design by removing color-coded progress ring
 - **External Image Dependencies**: Eliminated external image loading for better GitHub performance
 
 ### Changed
-- **Centered Layout**: All content now centered for clean, professional appearance
-- **Simplified Design**: Streamlined widget focusing on essential information
-- **Button Position**: Moved "View Profile →" button to center below name/location
-- **Score Display**: Consolidated score information into single centered line
-- **GitHub Optimized**: Enhanced compatibility with GitHub's markdown restrictions
+- **2-Column Layout**: Redesigned with profile info (left) and score display (right)
+- **Talent Protocol Logo**: Added official logo to top-left of widget
+- **Enhanced Spacing**: Improved vertical spacing between all elements
+- **Button Design**: Metallic gray button with better positioning
 
 ### Fixed
 - **Image Loading Issues**: Resolved profile image display problems in GitHub READMEs
