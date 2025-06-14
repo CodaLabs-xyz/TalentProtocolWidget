@@ -12,8 +12,35 @@ function generateSVG(profileData) {
   const { builderScore, calculating, displayName, bio, location, profileId } = profileData;
   const statusText = calculating ? 'Calculating...' : 'Builder Score';
   
-  // Truncate bio to fit in widget
-  const truncatedBio = bio && bio.length > 60 ? bio.substring(0, 57) + '...' : bio;
+  // Split bio into multiple lines for better display
+  const splitBioIntoLines = (text, maxCharsPerLine = 35) => {
+    if (!text) return [];
+    const words = text.split(' ');
+    const lines = [];
+    let currentLine = '';
+    
+    for (const word of words) {
+      if ((currentLine + ' ' + word).length <= maxCharsPerLine) {
+        currentLine = currentLine ? currentLine + ' ' + word : word;
+      } else {
+        if (currentLine) {
+          lines.push(currentLine);
+          currentLine = word;
+        } else {
+          lines.push(word);
+        }
+      }
+      if (lines.length >= 2) break; // Limit to 2 lines
+    }
+    
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+    
+    return lines;
+  };
+  
+  const bioLines = splitBioIntoLines(bio);
   
   return `
 <svg width="500" height="180" xmlns="http://www.w3.org/2000/svg">
@@ -50,40 +77,36 @@ function generateSVG(profileData) {
   ` : ''}
   
   <!-- Bio -->
-  ${truncatedBio ? `
-  <text x="90" y="80" font-family="Arial, sans-serif" font-size="12" fill="#C0C0C0">
-    ${truncatedBio}
-  </text>
-  ` : ''}
+  ${bioLines.length > 0 ? bioLines.map((line, index) => `
+  <text x="90" y="${80 + (index * 15)}" font-family="Arial, sans-serif" font-size="12" fill="#C0C0C0">
+    ${line}
+  </text>`).join('') : ''}
   
   <!-- View Profile Button -->
   ${profileId ? `
   <a href="https://app.talentprotocol.com/${profileId}" target="_blank">
-    <rect x="90" y="100" width="120" height="28" rx="14" fill="url(#buttonBg)" stroke="#707070" stroke-width="1" style="cursor:pointer"/>
-    <text x="150" y="118" font-family="Arial, sans-serif" font-size="12" font-weight="bold" 
+    <rect x="90" y="${110 + (bioLines.length > 1 ? 15 : 0)}" width="120" height="28" rx="14" fill="url(#buttonBg)" stroke="#707070" stroke-width="1" style="cursor:pointer"/>
+    <text x="150" y="${128 + (bioLines.length > 1 ? 15 : 0)}" font-family="Arial, sans-serif" font-size="12" font-weight="bold" 
           fill="#E0E0E0" text-anchor="middle">View Profile →</text>
   </a>
   ` : ''}
   
   <!-- Right Section: Score Display -->
-  <text x="380" y="35" font-family="Arial, sans-serif" font-size="12" fill="#B0B0B0" text-anchor="middle">
+  <text x="380" y="50" font-family="Arial, sans-serif" font-size="16" fill="#B0B0B0" text-anchor="middle">
     ${statusText}
   </text>
-  <text x="380" y="60" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#E0E0E0" text-anchor="middle">
-    ${builderScore || 'N/A'}
-  </text>
-  <text x="380" y="75" font-family="Arial, sans-serif" font-size="11" fill="#909090" text-anchor="middle">
+  <text x="380" y="115" font-family="Arial, sans-serif" font-size="11" fill="#909090" text-anchor="middle">
     ${calculating ? 'updating...' : 'points'}
   </text>
   
   <!-- Score Circle Background -->
-  <circle cx="380" cy="120" r="35" fill="none" stroke="#404040" stroke-width="3"/>
-  <circle cx="380" cy="120" r="35" fill="none" stroke="#606060" stroke-width="2" 
-          stroke-dasharray="${Math.min((builderScore / 500) * 220, 220)} 220" transform="rotate(-90 380 120)"/>
+  <circle cx="380" cy="100" r="35" fill="none" stroke="#404040" stroke-width="3"/>
+  <circle cx="380" cy="100" r="35" fill="none" stroke="#606060" stroke-width="2" 
+          stroke-dasharray="${Math.min((builderScore / 1000) * 220, 220)} 220" transform="rotate(-90 380 100)"/>
   
-  <text x="380" y="125" font-family="Arial, sans-serif" font-size="14" font-weight="bold" 
+  <text x="380" y="100" font-family="Arial, sans-serif" font-size="22" font-weight="bold" 
         fill="#E0E0E0" text-anchor="middle">
-    ${Math.round((builderScore / 500) * 100) || 0}%
+        ${builderScore || 'N/A'}
   </text>
 </svg>`.trim();
 }
