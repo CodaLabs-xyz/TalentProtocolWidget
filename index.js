@@ -16,7 +16,7 @@ function generateSVG(profileData) {
   const truncatedBio = bio && bio.length > 60 ? bio.substring(0, 57) + '...' : bio;
   
   return `
-<svg width="500" height="160" xmlns="http://www.w3.org/2000/svg">
+<svg width="500" height="180" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#0A0A0A;stop-opacity:1" />
@@ -28,7 +28,7 @@ function generateSVG(profileData) {
     </linearGradient>
   </defs>
   
-  <rect width="500" height="160" rx="12" fill="url(#bg)" stroke="#404040" stroke-width="1"/>
+  <rect width="500" height="180" rx="12" fill="url(#bg)" stroke="#404040" stroke-width="1"/>
   
   <!-- Left Section: Profile Info -->
   <!-- Talent Protocol Logo -->
@@ -77,11 +77,11 @@ function generateSVG(profileData) {
   </text>
   
   <!-- Score Circle Background -->
-  <circle cx="380" cy="105" r="35" fill="none" stroke="#404040" stroke-width="3"/>
-  <circle cx="380" cy="105" r="35" fill="none" stroke="#606060" stroke-width="2" 
-          stroke-dasharray="${Math.min((builderScore / 500) * 220, 220)} 220" transform="rotate(-90 380 105)"/>
+  <circle cx="380" cy="120" r="35" fill="none" stroke="#404040" stroke-width="3"/>
+  <circle cx="380" cy="120" r="35" fill="none" stroke="#606060" stroke-width="2" 
+          stroke-dasharray="${Math.min((builderScore / 500) * 220, 220)} 220" transform="rotate(-90 380 120)"/>
   
-  <text x="380" y="110" font-family="Arial, sans-serif" font-size="14" font-weight="bold" 
+  <text x="380" y="125" font-family="Arial, sans-serif" font-size="14" font-weight="bold" 
         fill="#E0E0E0" text-anchor="middle">
     ${Math.round((builderScore / 500) * 100) || 0}%
   </text>
