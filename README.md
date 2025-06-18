@@ -116,23 +116,23 @@ Both calls require the `X-API-KEY` header with your Talent Protocol API key.
 
 **✅ Recommended (Clickable Widget):**
 ```markdown
-[![Talent Protocol Score](https://talent-protocol-widget.vercel.app/widget/YOUR_WALLET_ADDRESS)](https://app.talentprotocol.com/YOUR_PROFILE_ID)
+[![Talent Protocol Score](https://talent-protocol-widget.codalabs.xyz/widget/YOUR_WALLET_ADDRESS)](https://app.talentprotocol.com/YOUR_PROFILE_ID)
 ```
 
 **Basic Display (Non-clickable):**
 ```markdown
-![Talent Protocol Score](https://talent-protocol-widget.vercel.app/widget/YOUR_WALLET_ADDRESS)
+![Talent Protocol Score](https://talent-protocol-widget.codalabs.xyz/widget/YOUR_WALLET_ADDRESS)
 ```
 
 ### Step 3: Working Example
 **Copy this exact code for the demo profile:**
 ```markdown
-[![Talent Protocol Score](https://talent-protocol-widget.vercel.app/widget/0xc2564e41B7F5Cb66d2d99466450CfebcE9e8228f)](https://app.talentprotocol.com/4e9db003-da84-466e-a951-c4c8973dfda9)
+[![Talent Protocol Score](https://talent-protocol-widget.codalabs.xyz/widget/0xc2564e41B7F5Cb66d2d99466450CfebcE9e8228f)](https://app.talentprotocol.com/4e9db003-da84-466e-a951-c4c8973dfda9)
 ```
 
 **For your own profile, replace with your details:**
 ```markdown
-[![Talent Protocol Score](https://talent-protocol-widget.vercel.app/widget/YOUR_WALLET_ADDRESS)](https://app.talentprotocol.com/YOUR_PROFILE_ID)
+[![Talent Protocol Score](https://talent-protocol-widget.codalabs.xyz/widget/YOUR_WALLET_ADDRESS)](https://app.talentprotocol.com/YOUR_PROFILE_ID)
 ```
 
 ### 💡 Pro Tips
@@ -192,9 +192,9 @@ Both calls require the `X-API-KEY` header with your Talent Protocol API key.
 | **API timeout** | Check Talent Protocol API status |
 
 ### Debug Endpoints
-- **Health Check**: `https://talent-protocol-widget.vercel.app/health`
-- **API Test**: `https://talent-protocol-widget.vercel.app/test/YOUR_WALLET_ADDRESS`
-- **Raw Widget**: `https://talent-protocol-widget.vercel.app/widget/YOUR_WALLET_ADDRESS`
+- **Health Check**: `https://talent-protocol-widget.codalabs.xyz/health`
+- **API Test**: `https://talent-protocol-widget.codalabs.xyz/test/YOUR_WALLET_ADDRESS`
+- **Raw Widget**: `https://talent-protocol-widget.codalabs.xyz/widget/YOUR_WALLET_ADDRESS`
 
 ## License
 
